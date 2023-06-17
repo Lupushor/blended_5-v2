@@ -2,18 +2,34 @@ import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { BiMailSend } from 'react-icons/bi';
 import styles from './Form.module.css';
+import {useAddCommentMutation} from '../../redux/commentApi'
 
 export const Form = () => {
   const [author, setAuthor] = useState('');
   const [content, setContent] = useState('');
-
+  const [addComment, {isLoading}] = useAddCommentMutation()
   const onHandleChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
+   switch (name){
+    case 'name':
+       setAuthor(value)
+    break
+case 'text': setContent(value)
+break;
+default: return 
+   }
   };
 
-  const onHandleSubmit = (e) => {
+  const onHandleSubmit = async(e) => {
     e.preventDefault();
+    if(content.trim() === '' || author.trim() === ''){
+      return toast.error("All fields must be filled !")};
+    try {
+      await addComment({content, author})
+      toast.success("Comment added !");
+    } catch (error) {
+      toast.error("❌", error.message);
+    }
 
     setAuthor('');
     setContent('');

@@ -9,7 +9,7 @@ export const App = () => {
     <>
       <Routes>
         <Route path={routes.HOME} element={<Layout />}>
-          <Route index element={<Home />} />
+          <Route index element={<Home/>} />
           <Route path={routes.OPTIONS} element={<Options />} />
         </Route>
 

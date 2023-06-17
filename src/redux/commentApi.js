@@ -1,37 +1,40 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const API_ENDPOINT = '/comments';
-const BASE_URL = 'https://64883ed00e2469c038fd53a7.mockapi.io';
+const API_ENDPOINT = "/comments";
+const BASE_URL = "https://64883ed00e2469c038fd53a7.mockapi.io";
 
 export const commentApi = createApi({
-  reducerPath: 'comments',
+  reducerPath: "comments",
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
   }),
-  tagTypes: ['Comments'],
+  tagTypes: ["Comments"],
   endpoints: (builder) => ({
-    getComments: builder.guery({
+    getComments: builder.query({
       query: () => API_ENDPOINT,
-      providesTags: ['Comments'],
-    })
-  }),
+      providesTags: ["Comments"],
+    }),
     addComment: builder.mutation({
-    query: (comment) => ({
-      url: API_ENDPOINT,
-      method: 'POST',
-      body: comment
+      query: (coment) => ({
+        url: API_ENDPOINT,
+        method: "POST",
+        body: coment,
+      }),
+      invalidatesTags: ["Comments"],
     }),
-    ivalidatesTags: ['Comments']
-  }),
     updateCommentCount: builder.mutation({
-    query: ({id, ...body}) => ({
-      url: `${API_ENDPOINT}/${id}`,
-method: 'PUT',
-body
+      query: ({ id, ...body }) => ({
+        url: `${API_ENDPOINT}/${id}`,
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: ["Comments"],
     }),
-    ivalidatesTags: ['Comments']
-  })
+  }),
 });
 
-
-export const {useGetCommentsQuery, useAddCommentMutation, useUpdateCommentCountMutation} = commentApi;
+export const {
+  useGetCommentsQuery,
+  useAddCommentMutation,
+  useUpdateCommentCountMutation,
+} = commentApi;
